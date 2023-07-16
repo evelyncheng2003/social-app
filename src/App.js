@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import GetUserEventPost from "./components/GetUserEventPost";
+import Login from "./components/Login";
+import ViewPost from "./components/ViewPost";
+import Overlay from "./components/Overlay";
+import ToggleSidebar from './components/ToggleSidebar';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ViewAllPosts from "./components/ViewAllPosts";
+import { React, useState } from "react";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+  const username = 'Poko'
+  const [loginStatus, setLoginStatus] = useState(false);
+
+  const loggedIn = () => {
+    setLoginStatus(true);
+  }
+
+  if (!loginStatus) {
+    return (
+      <Login onClick={loggedIn}
+        displayerror={true}
+      />
+    )
+  } else {
+    return (
+      <div>
+
+
+        <ToggleSidebar />
+        <Routes>
+          <Route exact path="/posts" element={<ViewAllPosts />} />
+          <Route path="/home" element={<Login />} />
+
+        </Routes>
+
+      </div>
+    );
+  }
 }
 
 export default App;
