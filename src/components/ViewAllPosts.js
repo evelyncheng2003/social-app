@@ -29,7 +29,7 @@ function ViewAllPosts() {
     }
 
     const seeAllPosts = () => {
-        fetch('http://localhost:9000/api/post/all')
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setAllPosts(data));
     }
@@ -42,7 +42,7 @@ function ViewAllPosts() {
     if (!click) {
         return (
             <div>
-
+                /* this line not right, cause close post to have error: useLocation may be used only in the context of a Router component. */
                 <ToggleSidebar />
 
                 <div class="cards-list">

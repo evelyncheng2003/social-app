@@ -3,7 +3,7 @@ import { React, useState, useEffect } from "react";
 function GetUserEventPost({ username }) {
     const [postResult, setpostResult] = useState([])
 
-    const myUrl = 'http://localhost:9000/api/users/all';
+    const myUrl = 'http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/users/all';
     const handleClick = () => {
         fetch(myUrl)
             .then((response) => response.json())
@@ -22,7 +22,7 @@ function GetUserEventPost({ username }) {
     };
 
     const handlePost = () => {
-        fetch('http://localhost:9000/api/users/create', requestOptions)
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/users/create', requestOptions)
             .then((response) => response.json());
     }
 

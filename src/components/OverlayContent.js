@@ -26,7 +26,7 @@ function OverlayContent({ overlayId, email }) {
     /* overlay should be false, meaning don't display the overlay anymore */
 
     const seeAllPosts = () => {
-        fetch('http://localhost:9000/api/post/all')
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setPost(data));
     }
@@ -72,7 +72,7 @@ function OverlayContent({ overlayId, email }) {
     };
 
     const handleUserReply = () => {
-        fetch('http://localhost:9000/api/comment/create', requestOptions)
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
@@ -92,7 +92,7 @@ function OverlayContent({ overlayId, email }) {
 
     const getPostbyId = () => {
         console.log('post_id = ' + post_id.overlayId);
-        let url = 'http://localhost:9000/api/post/find/' + post_id.overlayId;
+        let url = 'http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/find/' + post_id.overlayId;
         fetch(url)
             .then((response) => response.json())
             .then((data) => setPost(data));
@@ -100,7 +100,7 @@ function OverlayContent({ overlayId, email }) {
 
     const getCommentsByPostId = () => {
         console.log('post_id = ' + post_id.overlayId);
-        let url = 'http://localhost:9000/api/comment/find/' + post_id.overlayId;
+        let url = 'http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/find/' + post_id.overlayId;
         fetch(url)
             .then((response) => response.json())
             .then((data) => setCommentList(data));
@@ -123,7 +123,7 @@ function OverlayContent({ overlayId, email }) {
     };
 
     const handleUserComment = () => {
-        fetch('http://localhost:9000/api/comment/create', requestOptions)
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)

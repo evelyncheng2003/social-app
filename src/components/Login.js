@@ -74,7 +74,7 @@ function Login({ displayerror }) {
     }
 
     const seeAllPosts = () => {
-        fetch('http://localhost:9000/api/post/all')
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setPost(data));
     }
@@ -82,7 +82,7 @@ function Login({ displayerror }) {
 
     const handlePost = () => {
         validateInput();
-        fetch('http://localhost:9000/api/users/create', requestOptions)
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/users/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)

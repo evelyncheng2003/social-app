@@ -28,14 +28,14 @@ function CommentForm() {
     };
 
     const getAllComments = () => {
-        fetch('http://localhost:9000/api/comment/all')
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/all')
             .then((response) => response.json())
             .then((data) => setCommentList(data));
     }
 
 
     const handleUserComment = () => {
-        fetch('http://localhost:9000/api/comment/create', requestOptions)
+        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
