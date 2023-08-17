@@ -1,22 +1,19 @@
-import { React, useState, createContext } from "react";
+import { React, useState, createContext, useEffect } from "react";
 import OverlayContent from "./OverlayContent";
 import Portal from "./Portal";
 import ViewAllPosts from "./ViewAllPosts";
 import { useOverlay } from "./OverlayState";
 
 
-function Overlay({ overlayId, email }) {
-    //const [overlay, setOverlay] = useState(true);
+function Overlay({ overlayId, user }) {
 
-    //const { overlay } = useOverlay();
-
+    //console.log('Overlay.js received overlayId: ' + overlayId);
     const { updateOverlay, getOverlay } = useOverlay();
 
-    console.log('Overlay() overlay state is: ' + getOverlay());
 
-    // const closeOverlay = () => {
-    //     setOverlay(false)
-    // }
+    useEffect(() => {
+        //console.log('overlay.js useEffect overlayID : ' + overlayId);
+    }, [])
 
     if (getOverlay()) {
         return (
@@ -25,7 +22,7 @@ function Overlay({ overlayId, email }) {
                     <Portal>
                         <OverlayContent
                             overlayId={overlayId}
-                            email={email}
+                            user={user}
 
                         />
                     </Portal>
@@ -34,10 +31,10 @@ function Overlay({ overlayId, email }) {
             </div>
         )
     } else {
+        //console.log('close overlay from Overlay.js called')
+        //console.log('closer overlay id is: ' + overlayId);
         return (
-            <ViewAllPosts
-
-            />
+            < ViewAllPosts />
         )
     }
 

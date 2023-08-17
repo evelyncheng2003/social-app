@@ -1,17 +1,20 @@
 import { React, useState, useEffect, useContext } from "react";
-import DisplayAllPosts from "./DisplayAllPosts";
-import Overlay from "./Overlay";
-import ViewAllPosts from "./ViewAllPosts";
 import { useOverlay } from "./OverlayState";
+import { MyContext } from "./MyContext";
 
-function OverlayContent({ overlayId, email }) {
+function OverlayContent({ overlayId, user }) {
+
     const [close, setClose] = useState(false);
     const [count, setCount] = useState(0);
     const [click, setClick] = useState(false);
     const [submit, setSubmit] = useState(false);
     const [error, setError] = useState();
+    const [likes, setLikes] = useState(0);
+    const [likeState, setLikeState] = useState(false);
 
     const [post, setPost] = useState([]);
+
+    const [emoji, setEmoji] = useState();
 
     /* function imported from OverlayState.js */
     const { updateOverlay, getOverlay } = useOverlay();
@@ -21,25 +24,11 @@ function OverlayContent({ overlayId, email }) {
     const [comment, setComment] = useState("")
 
     let post_id = { overlayId };
-    let email123 = { email };
 
-    /* overlay should be false, meaning don't display the overlay anymore */
 
-    const seeAllPosts = () => {
-        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/all')
-            .then((response) => response.json())
-            .then((data) => setPost(data));
-    }
+    //let currentTimestamp = Date.now();
 
-    const like = () => {
-        if (count == 0) {
-            setCount(count => count + 1);
-        }
-    }
-
-    let currentTimestamp = Date.now();
-
-    const unixtime_to_date = (ts) => {
+    const unixtime_to_date = () => {
         let date = new Intl.DateTimeFormat("en-US", {
             timeZone: "America/New_York",
             year: "numeric",
@@ -47,32 +36,59 @@ function OverlayContent({ overlayId, email }) {
             day: "2-digit",
             hour: "2-digit",
             minute: "2-digit"
-        }).format(currentTimestamp);
+        }).format(Date.now());
 
         return date;
     }
+    // console.log('unixtime rn: ' + unixtime_to_date);
 
+    // this is working, otherwise the overlay won't close at all 
+    // updateOverlay(false) is correct 
     const closeOverlay = () => {
-        setClose(true)
-        console.log('OverlayContent before overlay state is: ' + getOverlay());
         updateOverlay(false)
-        console.log('OverlayContent after overlay state is: ' + getOverlay());
-
+        //('closeOverlay called, is: ' + getOverlay())
     }
 
-    const requestOptions = {
+
+    const getPostbyId = () => {
+        //console.log('post_id = ' + post_id.overlayId);
+        let url = 'http://localhost:9000/api/post/find/' + post_id.overlayId;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => setPost(data));
+    }
+
+    const getCommentsByPostId = () => {
+        //console.log('post_id = ' + post_id.overlayId);
+        let url = 'http://localhost:9000/api/comment/find/' + post_id.overlayId;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => setCommentList(data));
+    }
+
+    useEffect(() => {
+        getPostbyId();
+        getCommentsByPostId();
+
+    }, []);
+
+    const handleCommentChange = event => {
+        setComment(event.target.value)
+    }
+
+
+
+    const requestLikeOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            username: email123.email,
-            usercomment: comment,
-            commenttime: 12345,
-            postid: post_id.overlayId
+            likes: post.likes + 1,
+            post_id: overlayId
         })
     };
 
-    const handleUserReply = () => {
-        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestOptions)
+    const handleIncrementLikes = () => {
+        fetch('http://localhost:9000/api/post/likes', requestLikeOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
@@ -83,47 +99,36 @@ function OverlayContent({ overlayId, email }) {
             })
             .then((data) => {
                 console.log(data)
+                return getPostbyId()
             })
             .catch((err) => {
                 console.log(err.message);
             })
-    }
 
-
-    const getPostbyId = () => {
-        console.log('post_id = ' + post_id.overlayId);
-        let url = 'http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/find/' + post_id.overlayId;
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => setPost(data));
-    }
-
-    const getCommentsByPostId = () => {
-        console.log('post_id = ' + post_id.overlayId);
-        let url = 'http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/find/' + post_id.overlayId;
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => setCommentList(data));
-    }
-
-    useEffect(() => {
-        getPostbyId();
-        getCommentsByPostId();
-    }, []);
-
-    const handleCommentChange = event => {
-        setComment(event.target.value)
     }
 
     let handleSubmitComment = e => {
         e.preventDefault()
         handleUserComment()
-
         setComment("")
     };
 
+    //console.log('overlayID from overlayContent: ' + overlayId);
+
+
+    const requestCommentOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            commenttime: unixtime_to_date,
+            postId: overlayId,
+            usercomment: comment,
+            username: user
+        })
+    };
+
     const handleUserComment = () => {
-        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestOptions)
+        fetch('http://localhost:9000/api/comment/create', requestCommentOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
@@ -141,76 +146,76 @@ function OverlayContent({ overlayId, email }) {
             })
     }
 
-    if (!close) {
-        return (
-            <div className="container-display-post-comments white">
-                <div>
-                    <div>
-                        <div id="first">
-                            <div class="cards-list11">
-                                <div id="circle-shape-example" >
-                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/kiwifruit-on-a-plate.jpg" alt="A photograph of sliced kiwifruit on a while plate"
-                                        class="curve"></img>
+
+    return (
+        <div className="container-display-post-comments white">
+            <div>
+                <div id="first">
+                    <div id="left-side">
+                        <div class="cards-list">
+                            <div >
+                                <div>
+                                    <p class="curve">{post.occasion}</p>
+                                </div>
+                                <div className="div-left-post">
                                     <h2><a href="#">{post.creator}</a></h2>
-                                    <p class="text">{post.title}</p>
-                                    <p class="text">{post.description}</p>
-                                    <p class="date">{post.post_time} </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="second">
-                            <div className="content-wrap">
-                                <div className="comments-list123">
-                                    <div className="card-comment-overall">
-                                        {commentList.map(((item) => (
-
-                                            <div class="card-comment">
-                                                <p><strong>{item.username}</strong></p>
-                                                <p class="date">{item.usercomment}</p>
-                                                <p class="text">{item.time} </p>
-                                            </div>
-
-                                        )))}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="sticky-button">
-                                <form onSubmit={handleSubmitComment}>
                                     <div>
-                                        <div className="div-left-comment">
-                                            <textarea className="sticky-text"
-                                                name="comment"
-                                                placeholder="Comment"
-                                                value={comment}
-                                                onChange={handleCommentChange}
-                                                required
-                                            />
-                                        </div>
-                                        <div className="div-right-comment">
-                                            <input type="submit" value="Post" />
-                                        </div>
+                                        <p class="title-text">{post.title}</p>
+
+                                        <p class="description-text">{post.description}</p>
+                                        <p>{unixtime_to_date}</p>
                                     </div>
-                                </form>
-                            </div>
-                            <div>
-                                <p onClick={closeOverlay} className="sticky-upper-right"><h1>X</h1></p>
+                                </div>
+                                <p class="date">{post.post_time} </p>
                             </div>
 
                         </div>
                     </div>
                 </div>
+                <div id="second">
+                    <div className="content-wrap">
+                        <div className="comments-list123">
+                            <div className="card-comment-overall">
+                                {commentList.map(((item) => (
+                                    <div class="card-comment">
+                                        <p class="comment-username"><strong>{item.username}</strong></p>
+                                        <p class="date">{item.usercomment}</p>
+                                        <p class="text comment-text">{item.time} </p>
 
+                                    </div>
+                                )))}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="sticky-button">
+                        <form onSubmit={handleSubmitComment}>
+                            <div>
+                                <div className="div-left-comment">
+                                    <textarea className="sticky-text"
+                                        name="comment"
+                                        placeholder="Comment"
+                                        value={comment}
+                                        onChange={handleCommentChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="div-right-comment">
+                                    <input type="submit" value="Post" />
+                                </div>
+                                <div>
+                                    <p onClick={handleIncrementLikes} class="heart">❤️️</p>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <p onClick={closeOverlay} className="sticky-upper-right"><h3>X</h3></p>
+                    </div>
+                </div>
             </div>
-        )
-    } else {
-        return (
-            <ViewAllPosts
-            />
-
-
-        )
-    }
-
+        </div >
+    )
 
 }
 

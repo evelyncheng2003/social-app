@@ -1,89 +1,126 @@
 import { React, useState, useEffect } from "react";
 import Overlay from "./Overlay";
+import ToggleSidebar from "./ToggleSidebar";
 import { useOverlay } from "./OverlayState";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
-import ToggleSidebar from './ToggleSidebar';
-//import Login from "./Login";
+import { useAuthorizedLogin } from "./AuthorizedLogin";
+import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { MyContext } from "./MyContext";
 
 
 
 function ViewAllPosts() {
+
+    const { user, postId } = useContext(MyContext);
+    const [postid, setpostid] = postId;
+    const [username, setUsername] = user;
+
+    //console.log('ViewAllPosts username is: ' + username);
+
+    const [count, setCount] = useState(0);
     const [overlayId, setOverlayId] = useState(0);
+    // const [postId, setPostId] = useState();
     const [click, setClick] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
+    const [backToLogin, setBackToLogin] = useState(false);
 
+    /* function imported from OverlayState.js */
     const { updateOverlay, getOverlay } = useOverlay();
 
+    const { updateLoginStatus, getLoginStatus } = useAuthorizedLogin();
 
 
-    //console.log(allPosts);
 
-    const seeOverlayPost = (post_obj) => {
-        console.log('ViewAllPost() seeOverlayPost postid = ' + post_obj.postId);
-        setOverlayId(post_obj.postId);
+    const unixtime_to_date = (ts) => {
+        let date = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/Los_Angeles",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit"
+        }).format(ts);
 
+        return date;
+    }
+
+    const showOverlayPost = (post_obj) => {
+        console.log('showOverlayPost called')
+        setpostid(post_obj.postId);
+        setClick(true);
         updateOverlay(true);
-
         setClick(true);
     }
 
     const seeAllPosts = () => {
-        fetch('http://MySocial-rest-api-service-env.eba-ukimrmpq.us-west-1.elasticbeanstalk.com:9000/api/post/all')
+        fetch('http://localhost:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setAllPosts(data));
     }
 
+
     /* need [] at the end to avoid an infinite loop */
     useEffect(() => {
-        seeAllPosts();
+        setOverlayId(0);
+        //console.log('overlayID from useEffect: ' + overlayId);
+        // updateOverlay(false);
+        // setClick(false)
+        if (getLoginStatus()) {
+            seeAllPosts();
+        } else {
+            console.log('redirect to login called')
+            setBackToLogin(true)
+        }
     }, [])
+
+
+    if (backToLogin) {
+        return (
+            <div>
+                <Navigate replace to="/login" />
+            </div>
+        )
+    }
+
 
     if (!click) {
         return (
             <div>
-                /* this line not right, cause close post to have error: useLocation may be used only in the context of a Router component. */
                 <ToggleSidebar />
-
                 <div class="cards-list">
                     {allPosts.map(((item) => (
-                        <div class="card" onClick={seeOverlayPost.bind(this, item)}>
-
+                        <div class="card" onClick={
+                            showOverlayPost.bind(this, item)
+                        }>
                             <div id="circle-shape-example">
-                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/kiwifruit-on-a-plate.jpg" alt="A photograph of sliced kiwifruit on a while plate"
-                                    class="curve"></img>
-                                <h2><a href="#">{item.creator}</a></h2>
+                                <p class="emoji-size">{item.occasion}</p>
                                 <p class="text">{item.title}</p>
-                                <p class="text">{item.description}</p>
-                                <p class="date">{item.post_time} </p>
                             </div>
                             <div>
                                 <div>
                                     <div className="div-left">
-                                        <p>❤️<small>3</small> </p>
+                                        <p>❤️ {item.likes}</p>
                                     </div>
 
-                                    <div className="div-right">
-                                        <p> 💬<strong>10</strong>  </p>
-                                    </div>
+
 
                                     <div className="div-last">
-                                        <p>12345</p>
+                                        <p>{unixtime_to_date(item.time)}</p>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     )))}
                 </div>
-            </div>
+            </div >
         )
     } else {
+        //console.log('postId is : ' + postid);
         return (
             <div>
                 <Overlay
-                    overlayId={overlayId}
-                    email='email'
+                    overlayId={postid}
+                    user={username}
                 />
             </div>
         )
