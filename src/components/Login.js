@@ -38,7 +38,7 @@ function Login({ displayerror }) {
 
 
     const handleLogin = () => {
-        fetch('http://localhost:9000/api/users/login', requestOptions)
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/users/login', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)

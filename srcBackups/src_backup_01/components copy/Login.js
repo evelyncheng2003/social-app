@@ -78,14 +78,14 @@ function Login({ displayerror }) {
     }
 
     const seeAllPosts = () => {
-        fetch('http://localhost:9000/api/post/all')
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setPost(data));
     }
 
     const handlePost = () => {
         validateInput();
-        fetch('http://localhost:9000/api/users/create', requestOptions)
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/users/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
