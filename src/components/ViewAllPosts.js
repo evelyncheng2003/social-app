@@ -53,7 +53,7 @@ function ViewAllPosts() {
     }
 
     const seeAllPosts = () => {
-        fetch('http://localhost:9000/api/post/all')
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setAllPosts(data));
     }
