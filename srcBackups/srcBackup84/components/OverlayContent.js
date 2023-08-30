@@ -33,7 +33,7 @@ function OverlayContent({ overlayId, user }) {
     /* overlay should be false, meaning don't display the overlay anymore */
 
     // const seeAllPosts = () => {
-    //     fetch('https://api.evelynandpoko.com/api/post/all')
+    //     fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/all')
     //         .then((response) => response.json())
     //         .then((data) => setPost(data));
     // }
@@ -63,7 +63,7 @@ function OverlayContent({ overlayId, user }) {
 
 
     // const handleUserReply = () => {
-    //     fetch('https://api.evelynandpoko.com/api/comment/create', requestOptions)
+    //     fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestOptions)
     //         .then(response => {
     //             setSubmit(true)
     //             setError(response.status)
@@ -83,7 +83,7 @@ function OverlayContent({ overlayId, user }) {
 
     const getPostbyId = () => {
         //console.log('post_id = ' + post_id.overlayId);
-        let url = 'https://api.evelynandpoko.com/api/post/find/' + post_id.overlayId;
+        let url = 'http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/find/' + post_id.overlayId;
         fetch(url)
             .then((response) => response.json())
             .then((data) => setPost(data));
@@ -91,7 +91,7 @@ function OverlayContent({ overlayId, user }) {
 
     const getCommentsByPostId = () => {
         //console.log('post_id = ' + post_id.overlayId);
-        let url = 'https://api.evelynandpoko.com/api/comment/find/' + post_id.overlayId;
+        let url = 'http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/comment/find/' + post_id.overlayId;
         fetch(url)
             .then((response) => response.json())
             .then((data) => setCommentList(data));
@@ -122,7 +122,7 @@ function OverlayContent({ overlayId, user }) {
 
     const handleIncrementLikes = () => {
         console.log('handleincrementlikes called')
-        fetch('https://api.evelynandpoko.com/api/post/likes', requestOptions)
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/likes', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
@@ -174,7 +174,7 @@ function OverlayContent({ overlayId, user }) {
     };
 
     const handleUserComment = () => {
-        fetch('https://api.evelynandpoko.com/api/comment/create', requestCommentOptions)
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/comment/create', requestCommentOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
