@@ -38,7 +38,7 @@ function Login({ displayerror }) {
 
 
     const handleLogin = () => {
-        fetch('http://api.evelynandpoko.com/api/users/login', requestOptions)
+        fetch('https://api.evelynandpoko.com/api/users/login', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)

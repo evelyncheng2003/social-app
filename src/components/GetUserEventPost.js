@@ -3,7 +3,7 @@ import { React, useState, useEffect } from "react";
 function GetUserEventPost({ username }) {
     const [postResult, setpostResult] = useState([])
 
-    const myUrl = 'http://api.evelynandpoko.com/api/users/all';
+    const myUrl = 'https://api.evelynandpoko.com/api/users/all';
     const handleClick = () => {
         fetch(myUrl)
             .then((response) => response.json())
@@ -22,7 +22,7 @@ function GetUserEventPost({ username }) {
     };
 
     const handlePost = () => {
-        fetch('http://api.evelynandpoko.com/api/users/create', requestOptions)
+        fetch('https://api.evelynandpoko.com/api/users/create', requestOptions)
             .then((response) => response.json());
     }
 

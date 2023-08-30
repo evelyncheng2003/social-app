@@ -37,7 +37,7 @@ function Post() {
 
 
     const seeAllPosts = () => {
-        fetch('http://api.evelynandpoko.com/api/post/all')
+        fetch('https://api.evelynandpoko.com/api/post/all')
             .then((response) => response.json())
             .then((data) => setPost(data));
     }
@@ -54,7 +54,7 @@ function Post() {
 
 
     const makeReply = () => {
-        fetch('http://api.evelynandpoko.com/api/users/create', requestOptions)
+        fetch('https://api.evelynandpoko.com/api/users/create', requestOptions)
             .then((response) => response.json())
             .then((data) => setPost(data))
     }

@@ -52,7 +52,7 @@ function OverlayContent({ overlayId, user }) {
 
     const getPostbyId = () => {
         //console.log('post_id = ' + post_id.overlayId);
-        let url = 'http://api.evelynandpoko.com/api/post/find/' + post_id.overlayId;
+        let url = 'https://api.evelynandpoko.com/api/post/find/' + post_id.overlayId;
         fetch(url)
             .then((response) => response.json())
             .then((data) => setPost(data));
@@ -60,7 +60,7 @@ function OverlayContent({ overlayId, user }) {
 
     const getCommentsByPostId = () => {
         //console.log('post_id = ' + post_id.overlayId);
-        let url = 'http://api.evelynandpoko.com/api/comment/find/' + post_id.overlayId;
+        let url = 'https://api.evelynandpoko.com/api/comment/find/' + post_id.overlayId;
         fetch(url)
             .then((response) => response.json())
             .then((data) => setCommentList(data));
@@ -88,7 +88,7 @@ function OverlayContent({ overlayId, user }) {
     };
 
     const handleIncrementLikes = () => {
-        fetch('http://api.evelynandpoko.com/api/post/likes', requestLikeOptions)
+        fetch('https://api.evelynandpoko.com/api/post/likes', requestLikeOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
@@ -128,7 +128,7 @@ function OverlayContent({ overlayId, user }) {
     };
 
     const handleUserComment = () => {
-        fetch('http://api.evelynandpoko.com/api/comment/create', requestCommentOptions)
+        fetch('https://api.evelynandpoko.com/api/comment/create', requestCommentOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
