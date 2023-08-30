@@ -40,7 +40,7 @@ function NewUserLogin({ displayerror }) {
 
 
     const handleLogin = () => {
-        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/users/create', requestOptions)
+        fetch('http://api.evelynandpoko.com/api/users/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)
