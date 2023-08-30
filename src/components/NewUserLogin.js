@@ -40,7 +40,7 @@ function NewUserLogin({ displayerror }) {
 
 
     const handleLogin = () => {
-        fetch('http://api.evelynandpoko.com/api/users/create', requestOptions)
+        fetch('https://api.evelynandpoko.com/api/users/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)

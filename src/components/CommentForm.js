@@ -28,14 +28,14 @@ function CommentForm() {
     };
 
     const getAllComments = () => {
-        fetch('http://api.evelynandpoko.com/api/comment/all')
+        fetch('https://api.evelynandpoko.com/api/comment/all')
             .then((response) => response.json())
             .then((data) => setCommentList(data));
     }
 
 
     const handleUserComment = () => {
-        fetch('http://api.evelynandpoko.com/api/comment/create', requestOptions)
+        fetch('https://api.evelynandpoko.com/api/comment/create', requestOptions)
             .then(response => {
                 setSubmit(true)
                 setError(response.status)

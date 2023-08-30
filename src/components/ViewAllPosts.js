@@ -53,7 +53,7 @@ function ViewAllPosts() {
     }
 
     const seeAllPosts = () => {
-        fetch('http://api.evelynandpoko.com/api/post/all')
+        fetch('https://api.evelynandpoko.com/api/post/all')
             .then((response) => response.json())
             .then((data) => setAllPosts(data));
     }
