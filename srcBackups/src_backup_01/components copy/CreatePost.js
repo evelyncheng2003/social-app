@@ -58,7 +58,7 @@ function CreatePost() {
 
 
     const createPost = () => {
-        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/create', requestOptions)
+        fetch('https://api.evelynandpoko.com/api/post/create', requestOptions)
             .then(response => {
                 console.log('response.status is ' + response.status);
                 if (response.status != 200) {
