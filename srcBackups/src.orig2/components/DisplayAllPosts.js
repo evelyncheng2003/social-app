@@ -37,7 +37,7 @@ function Post() {
 
 
     const seeAllPosts = () => {
-        fetch('https://api.evelynandpoko.com/api/post/all')
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setPost(data));
     }
@@ -54,7 +54,7 @@ function Post() {
 
 
     const makeReply = () => {
-        fetch('https://api.evelynandpoko.com/api/users/create', requestOptions)
+        fetch('http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:9000/api/users/create', requestOptions)
             .then((response) => response.json())
             .then((data) => setPost(data))
     }

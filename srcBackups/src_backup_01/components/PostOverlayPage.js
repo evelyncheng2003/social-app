@@ -29,8 +29,8 @@ const DefaultComponent = () => {
                 currentUserFullName: 'Nassir Alkourdi'
             }}
             logIn={{
-                loginLink: 'https://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:3000/',
-                signupLink: 'https://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:3000/'
+                loginLink: 'http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:3000/',
+                signupLink: 'http://My-social-app-rest-api-server-env.eba-68dbc2pp.us-west-1.elasticbeanstalk.com:3000/'
             }}
             commentData={data}
         />
