@@ -23,12 +23,12 @@ function ViewAllPosts() {
     const [click, setClick] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
     const [backToLogin, setBackToLogin] = useState(false);
+    const [post_id, setPostId] = useState(0);
 
     /* function imported from OverlayState.js */
     const { updateOverlay, getOverlay } = useOverlay();
 
     const { updateLoginStatus, getLoginStatus } = useAuthorizedLogin();
-
 
 
     const unixtime_to_date = (ts) => {
@@ -53,10 +53,41 @@ function ViewAllPosts() {
     }
 
     const seeAllPosts = () => {
-        fetch('https://api.evelynandpoko.com/api/post/all')
+        fetch('http://localhost:9000/api/post/all')
             .then((response) => response.json())
             .then((data) => setAllPosts(data));
     }
+
+
+    const deletePost = (post_obj) => {
+        //setPostId(post_obj.postId)
+        console.log('handleDeletePost called, post ID : ' + post_obj.postId)
+        // setpostid(post_obj.postId);
+
+        fetch('http://localhost:9000/api/post/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "deleteId": post_obj.postId
+            })
+        })
+            .then(response => {
+                console.log('response.status is ' + response.status);
+                if (response.status != 200) {
+                    seeAllPosts();
+                }
+                if (!response.ok) {
+                    // setLoginStatus(false);
+                    //    throw new Error(`HTTP Error. Status is ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => console.log(data))
+            .catch((err) => {
+                console.log(err.message);
+            })
+    }
+
 
 
     /* need [] at the end to avoid an infinite loop */
@@ -92,6 +123,11 @@ function ViewAllPosts() {
                         <div class="card" onClick={
                             showOverlayPost.bind(this, item)
                         }>
+                            <div>
+                                <div className="div-last-first-row">
+                                    <h3 onClick={deletePost.bind(this, item)}>🗑</h3>
+                                </div>
+                            </div>
                             <div id="circle-shape-example">
                                 <p class="emoji-size">{item.occasion}</p>
                                 <p class="text">{item.title}</p>
